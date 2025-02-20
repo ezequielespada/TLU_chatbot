@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Box</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <img src="lock02.svg" class="chat-title" alt="Lock">
+            <p> THE LOCK UP</p>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-message bot">
+                <div class="icon-container">
+                    <img src="lock02.svg" class="icon" alt="Lock">
+                </div>
+                <div class="message-box">
+                    <p>Hello, welcome to The Lock Up, lorem ipsum dolor sit amet...</p>
+                </div>
+            </div>
+            <div class="chat-message user">
+                <p>I want this, lorem ipsum dolor sit amet...</p>
+            </div>
+            <div class="chat-message bot">
+                <div class="icon-container">
+                    <img src="lock02.svg" class="icon" alt="Lock">
+                </div>
+                <div class="message-box">
+                    <p>Lorem ipsum dolor sit amet...</p>
+                    <ul>
+                        <li>List</li>
+                        <li>List</li>
+                        <li>List</li>
+                        <li><a href="#">List link</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Write your question here...">
+            <button onclick="sendMessage()">
+                <img src="send-01.svg" alt="Send">
+            </button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
