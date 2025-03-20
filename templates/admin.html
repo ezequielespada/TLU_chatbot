@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel</title>
+
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}"> -->
+  <link rel="stylesheet" href="../static/css/admin.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Encabezado unificado -->
+  <header class="admin-header">
+    <div class="header-left">
+      <!-- <img src="{{ url_for('static', filename='assets/the-lock-up.svg') }}" alt="The Lock Up logo"> -->
+      <img src="../static/assets/the-lock-up.svg" alt="">
+      <h3>THE LOCK UP</h3>
+    </div>
+
+    <div class="header-right">
+      <!-- Botón de Logout con imagen SVG -->
+      <button class="logout-button">
+        <!-- <img src="{{ url_for('static', filename='assets/user-icon.svg') }}" alt="Logout Icon" width="24" height="24"> -->
+        <img src="../static/assets/user-icon.svg" alt="Logout Icon" width="24" height="24">
+        Log out
+      </button>
+    </div>
+  </header>
+  
+
+  <div class="admin-layout">
+    
+    <!-- Chat Widget -->
+    <div id="chat-widget">
+      <div class="chat-popup active">
+        <div class="chat-body">
+          <div id="chat-messages"></div>
+          <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type your question here...">
+            <button id="send-button" onclick="sendMessage()">
+              <!-- <img src="{{ url_for('static', filename='assets/send-01.svg') }}" alt="send-button"> -->
+
+              <img src="../static/assets/send-01.svg" alt="">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de administración -->
+    <div class="admin-wrapper">
+      <main class="admin-panel">
+
+        <!-- Sección para actualizar los datos de preguntas y respuestas -->
+        <div class="upload-section">
+          <h2>Admin Panel</h2>
+          <h3>Update Q&A Data</h3>
+          <form id="qa-form">
+            <div class="file-container">
+              <label for="qa-file" class="custom-file-upload Rectangle-3">
+                Select file...
+              </label>
+              <input type="file" id="qa-file" accept=".csv" />
+              <span id="file-name-qa" class="file-name">No file selected...</span>
+            </div>
+            <button type="submit" class="red-button">Upload Q&A</button>
+          </form>
+        </div>
+
+        <!-- Sección para actualizar las ubicaciones -->
+        <div class="upload-section">
+          <h3>Update Locations</h3>
+          <form id="locations-form">
+            <div class="file-container">
+              <label for="locations-file" class="custom-file-upload Rectangle-3">
+                Select file...
+              </label>
+              <input type="file" id="locations-file" accept=".csv" />
+              <span id="file-name-locations" class="file-name">No file selected...</span>
+            </div>
+            <button type="submit" class="red-button">Upload Locations</button>
+          </form>
+        </div>
+
+
+        <!-- Sección para administrar prompts -->
+        <div class="prompt-section">
+          <h3>Prompt Section</h3>
+          <form id="prompt-form">
+            <label for="prompt-select">Select Prompt:</label>
+            <select id="prompt-select"></select>
+
+            <label for="prompt-name">Prompt Name:</label>
+            <input type="text" id="prompt-name" required />
+
+            <label for="prompt-content">Prompt Content:</label>
+            <textarea id="prompt-content" rows="8" required></textarea>
+            <p class="help-text">
+              Use <code>{qa_context}</code> and <code>{locations_context}</code> as placeholders.
+            </p>
+
+            <div class="button-group">
+              <button type="submit" class="red-button">Save Prompt</button>
+              <button type="button" id="create-new-prompt" class="red-button">Create New</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+  </div>
+
+  <!-- <script src="{{ url_for('static', filename='js/admin.js') }}"></script> -->
+
+  <script src="../static/js/admin.js"></script>
+
+</body>
+</html>
