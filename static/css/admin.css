@@ -1,13 +1,15 @@
-/* 1. Globales y Reset */
-* {
+/* ============================================================
+ * 1. RESET Y ESTILOS GLOBALES
+ * ============================================================ */
+ * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  padding: 2px;
   min-height: 100vh;
   min-width: 800px;
-  padding: 2px;
   font-family: "Inter", sans-serif;
   background-color: #0063ac;
   display: flex;
@@ -16,15 +18,19 @@ body {
   justify-content: center;
 }
 
-/* 2. Contenedor principal */
+/* ============================================================
+ * 2. CONTENEDOR PRINCIPAL
+ * ============================================================ */
 .logo-container {
-  max-width: 500px;
   width: 100%;
+  max-width: 500px;
   margin: 0 auto;
   border-radius: 8px;
 }
 
-/* 3. Tipografía y formularios */
+/* ============================================================
+ * 3. TIPOGRAFÍA Y FORMULARIOS
+ * ============================================================ */
 .admin-panel h2,
 .prompt-section h3,
 .upload-section h3,
@@ -32,7 +38,6 @@ label {
   font-family: "Roboto Condensed", sans-serif;
   color: #0E3459;
   font-weight: 700;
-  
 }
 
 .admin-panel h2 {
@@ -74,71 +79,75 @@ textarea {
 }
 
 .help-text {
-  font-family: Inter;
   font-size: 10px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.5;
-  letter-spacing: normal;
-  text-align: left;
   color: #787878;
+  line-height: 1.5;
+  text-align: left;
 }
 
-/* 4. Botones */
+/* ============================================================
+ * 4. BOTONES Y ESTILOS DE INPUT PERSONALIZADOS
+ * ============================================================ */
 
+/* Texto de archivo seleccionado */
 .file-name {
   margin-left: 10px;
   color: #666;
   font-size: 12px;
 }
 
-/* Oculta el input de archivo */
+/* Oculta el input de archivo nativo */
 input[type="file"] {
   display: none;
 }
 
-/* Botón personalizado para seleccionar archivo */
+/* Estilo para botón personalizado de archivo */
 .custom-file-upload.Rectangle-3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 120px; 
+  width: 120px;
   height: 40px;
   border-radius: 5px;
   background-color: #f5f5f5;
   color: #363636;
   font-family: "Inter", sans-serif;
   font-size: 12px;
-  font-weight: normal;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
   margin-bottom: 10px;
-  
 }
 
 .custom-file-upload.Rectangle-3:hover {
   background-color: #e0e0e0;
 }
 
-
-.red-button {
+/* Botones rojos */
+.red-button,
+.prompt-red-button {
   background-color: #CB291A;
   color: white;
   border: none;
   width: 125px;
-  height: 35px;
+  height: 40px;
   border-radius: 100px;
-  padding: 8px 14px;
-  font-size: 14px;
   font-family: "Roboto Condensed", sans-serif;
   font-weight: bold;
-
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.red-button:hover {
+.red-button {
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.prompt-red-button {
+  padding: 8px 14px;
+  font-size: 11px;
+}
+
+.red-button:hover,
+.prompt-red-button:hover {
   background-color: #a91f12;
 }
 
@@ -149,6 +158,7 @@ input[type="file"] {
   justify-content: space-between;
 }
 
+/* Botón de logout */
 .logout-button {
   display: flex;
   align-items: center;
@@ -167,7 +177,9 @@ input[type="file"] {
   color: #f00;
 }
 
-/* 5. Layout de Dos Columnas */
+/* ============================================================
+ * 5. LAYOUT GENERAL DE DOS COLUMNAS
+ * ============================================================ */
 .admin-layout {
   display: flex;
   justify-content: center;
@@ -175,7 +187,6 @@ input[type="file"] {
   width: 100%;
   height: 600px;
   min-width: 800px;
-
 }
 
 #chat-widget,
@@ -185,7 +196,9 @@ input[type="file"] {
   max-width: 400px;
 }
 
-/* 6. Panel Administrativo */
+/* ============================================================
+ * 6. PANEL ADMINISTRATIVO
+ * ============================================================ */
 .admin-wrapper {
   background-color: white;
   border-radius: 0 0 12px 0;
@@ -216,11 +229,11 @@ input[type="file"] {
 }
 
 .header-right h2 {
-  font-family: "Roboto Condensed", sans-serif;
   font-size: 20px;
-  margin: 0;
   font-weight: 600;
   letter-spacing: 1px;
+  margin: 0;
+  font-family: "Roboto Condensed", sans-serif;
 }
 
 .lock-icon {
@@ -244,7 +257,7 @@ input[type="file"] {
 .upload-section form {
   display: flex;
   flex-direction: column;
-  gap: 10px; 
+  gap: 10px;
   align-items: flex-start;
   margin-top: 20px;
 }
@@ -253,7 +266,9 @@ input[type="file"] {
   margin-top: 25px;
 }
 
-/* 7. Chatbot */
+/* ============================================================
+ * 7. CHATBOT
+ * ============================================================ */
 #chat-widget {
   display: flex;
   flex-direction: column;
@@ -262,16 +277,14 @@ input[type="file"] {
   background-color: white;
   border-radius: 0 0 0 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-  padding: 0;
 }
 
 .chat-body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: 600px;
   overflow: hidden;
-  height: 600px;    /* Establece una altura fija */
-
 }
 
 #chat-messages {
@@ -286,9 +299,8 @@ input[type="file"] {
   display: flex;
   align-items: center;
   padding: 10px;
-  border-top: 1px solid #f5f5f5;
   background-color: #fff;
-  flex-shrink: 0;
+  border-top: 1px solid #f5f5f5;
 }
 
 #user-input {
@@ -298,10 +310,9 @@ input[type="file"] {
   border: 1px solid white;
   border-radius: 4px;
   outline: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   resize: none;
+  white-space: normal;
+  text-overflow: ellipsis;
 }
 
 #send-button {
@@ -311,15 +322,15 @@ input[type="file"] {
 }
 
 #send-button img {
-  width: 40px; 
-  height: 40px; 
+  width: 40px;
+  height: 40px;
 }
-
 
 #send-button:hover {
   transform: scale(1.1);
 }
 
+/* Estilos de mensajes */
 .message {
   margin-bottom: 10px;
   padding: 8px 12px;
@@ -328,8 +339,8 @@ input[type="file"] {
 
 .user-message {
   background-color: #0063ac;
+  color: #fff;
   margin-left: auto;
-  color: #ffffff;
   max-width: 75%;
 }
 
@@ -341,16 +352,28 @@ input[type="file"] {
 
 .bot-formatted-message {
   background-color: #f5f5f5;
-  padding: 13px;
+  padding: 10px 14px;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .bot-icon {
   width: 30px;
   height: 30px;
-  margin-top: 0px;
 }
 
-/* 8. Bullet Points */
+.bot-formatted-message strong {
+  font-weight: 700;
+  color: #0e3459;
+}
+
+.bot-formatted-message br {
+  line-height: 1.6;
+}
+
+/* ============================================================
+ * 8. ESTILOS EXTRA Y UTILITARIOS
+ * ============================================================ */
 .step {
   padding-left: 20px;
 }
@@ -358,8 +381,8 @@ input[type="file"] {
 .bullet-point {
   position: relative;
   padding-left: 20px;
-  line-height: 1;
   margin: 4px 0 0 0;
+  line-height: 1;
 }
 
 .bullet-point::before {
@@ -376,11 +399,38 @@ input[type="file"] {
   word-break: break-word;
 }
 
+.error-message {
+  background-color: #ffe0e0;
+  color: #a00;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+}
 
+.retry-button {
+  margin-top: 0.5rem;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.retry-button:hover {
+  background-color: #c9302c;
+}
+
+/* ============================================================
+ * 9. MEDIA QUERIES
+ * ============================================================ */
 @media only screen and (max-width: 799px) {
   .admin-layout {
     flex-direction: row;
     flex-wrap: nowrap;
-    overflow-x: auto; /* si es menor a 800px, que aparezca scroll horizontal */
   }
 }
+
+/* Revisado el 23/04/2025 - para trabajar con el panel de administrador
+para el chatbot Thelockup admin.html */

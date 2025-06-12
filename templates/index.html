@@ -18,7 +18,10 @@
         <!-- <img src="../static/assets/the-lock-up-home-cover.jpg" alt="Cover Image" class="cover-image"> -->
     </div>
     
-    <script src="{{ url_for('static', filename='js/chat-widget.js') }}"></script>
-    <!-- <script src="../static/js/chat-widget.js"></script> -->
+    <script src="{{ url_for('static', filename='js/chat-core.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/chat-widget.js') }}" defer></script>
+    <!-- <script src="../static/js/chat-core.js" defer></script>  -->
+    <!-- <script src="../static/js/chat-widget.js" defer></script>   -->
+    
 </body>
 </html>

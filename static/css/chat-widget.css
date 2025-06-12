@@ -190,3 +190,72 @@ button img {
     font-size: 16px;
 }
     
+/* ✅ Correcciones visuales para evitar scroll horizontal en el chat widget */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.bot-message-content {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.bot-formatted-message,
+.locations-list,
+.location-item,
+.location-item a {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+/* Complemento para estilizar items y links */
+
+.locations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.location-item {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.location-item strong {
+  font-size: 14px;
+  color: #0E3459;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.location-item a {
+  color: #0E3459;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 2px;
+}
+
+.location-item a:hover {
+  text-decoration: underline;
+  color: #003366;
+}
+
+.location-hours {
+  font-style: italic;
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+}

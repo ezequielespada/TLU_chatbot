@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel</title>
 
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}"> -->
-  <link rel="stylesheet" href="../static/css/admin.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <!-- <link rel="stylesheet" href="../static/css/admin.css"> -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,16 +17,16 @@
   <!-- Encabezado unificado -->
   <header class="admin-header">
     <div class="header-left">
-      <!-- <img src="{{ url_for('static', filename='assets/the-lock-up.svg') }}" alt="The Lock Up logo"> -->
-      <img src="../static/assets/the-lock-up.svg" alt="">
+      <img src="{{ url_for('static', filename='assets/the-lock-up.svg') }}" alt="The Lock Up logo">
+      <!-- <img src="../static/assets/the-lock-up.svg" alt=""> -->
       <h3>THE LOCK UP</h3>
     </div>
 
     <div class="header-right">
       <!-- Botón de Logout con imagen SVG -->
       <button class="logout-button">
-        <!-- <img src="{{ url_for('static', filename='assets/user-icon.svg') }}" alt="Logout Icon" width="24" height="24"> -->
-        <img src="../static/assets/user-icon.svg" alt="Logout Icon" width="24" height="24">
+        <img src="{{ url_for('static', filename='assets/user-icon.svg') }}" alt="Logout Icon" width="24" height="24">
+        <!-- <img src="../static/assets/user-icon.svg" alt="Logout Icon" width="24" height="24"> -->
         Log out
       </button>
     </div>
@@ -43,9 +43,9 @@
           <div class="input-container">
             <input type="text" id="user-input" placeholder="Type your question here...">
             <button id="send-button" onclick="sendMessage()">
-              <!-- <img src="{{ url_for('static', filename='assets/send-01.svg') }}" alt="send-button"> -->
+              <img src="{{ url_for('static', filename='assets/send-01.svg') }}" alt="send-button">
 
-              <img src="../static/assets/send-01.svg" alt="">
+              <!-- <img src="../static/assets/send-01.svg" alt=""> -->
             </button>
           </div>
         </div>
@@ -100,13 +100,19 @@
 
             <label for="prompt-content">Prompt Content:</label>
             <textarea id="prompt-content" rows="8" required></textarea>
+
+            <!-- Checkbox para activar el prompt -->
+            <label for="prompt-active">Active:</label>
+            <input type="checkbox" id="prompt-active" />
+
             <p class="help-text">
               Use <code>{qa_context}</code> and <code>{locations_context}</code> as placeholders.
             </p>
 
             <div class="button-group">
-              <button type="submit" class="red-button">Save Prompt</button>
-              <button type="button" id="create-new-prompt" class="red-button">Create New</button>
+              <button type="submit" class="prompt-red-button">Save Prompt</button>
+              <button type="button" id="create-new-prompt" class="prompt-red-button">Create New</button>
+              <button type="button" id="delete-prompt" class="prompt-red-button">Delete Prompt</button>
             </div>
           </form>
         </div>
@@ -115,9 +121,12 @@
 
   </div>
 
-  <!-- <script src="{{ url_for('static', filename='js/admin.js') }}"></script> -->
+  <script src="{{ url_for('static', filename='js/chat-core.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/admin-chat.js') }}"></script>
 
-  <script src="../static/js/admin.js"></script>
+  <!-- <script src="../static/js/chat-core.js" defer></script> -->
+  <!-- <script src="../static/js/admin-chat.js" defer></script> -->
+
 
 </body>
 </html>

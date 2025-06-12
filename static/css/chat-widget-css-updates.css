@@ -1,0 +1,48 @@
+/* Estilos adicionales para chat-widget.css */
+
+/* Estilos para mensaje de bot con formato estructurado */
+.bot-formatted-message strong {
+    font-weight: 700;
+    color: #0e3459;
+}
+
+.bot-formatted-message ul {
+    padding-left: 0;
+    margin: 10px 0;
+}
+
+.bot-formatted-message li {
+    margin-bottom: 5px;
+}
+
+/* Estilos para las ubicaciones */
+.locations-list {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.location-item {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.location-item:last-child {
+    border-bottom: none;
+}
+
+.location-phone {
+    color: #0063ac;
+    text-decoration: none;
+}
+
+.location-phone:hover {
+    text-decoration: underline;
+}
+
+.location-detail {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 8px;

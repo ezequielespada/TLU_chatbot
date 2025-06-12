@@ -1,269 +1,342 @@
-// admin.js
-document.addEventListener('DOMContentLoaded', function() {
-  // Cargar los prompts al iniciar
-  loadPrompts();
-
-  // Mostrar mensaje de bienvenida en el chat
-  addMessage(`Hello, welcome to The Lock Up Self Storage! How can I assist you today? For example, you can ask:
-- What storage unit sizes are available?
-- How much does a unit cost?
-- What are your office hours?`, false);
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuthentication();
+  setupLogout();
+  preventBackNavigation();
+  loadChatHistory();
+  initializeChat();
+  setupPromptForm();
+  setupFileUploadForms();
+  setupPromptSelect();
+  setupFileNameDisplays();
+  setupEnterKeySubmission();
+  setupDeletePromptButton();
 });
 
-// Cargar prompts desde el servidor
+// 1️⃣ Verificar sesión al cargar la página
+function checkAuthentication() {
+  fetch('/check_auth', { credentials: 'same-origin' })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.authenticated) {
+        window.location.href = "/login";
+      }
+    })
+    .catch(error => {
+      console.error("Error verificando autenticación:", error);
+      window.location.href = "/login";
+    });
+}
+
+// 2️⃣ Evitar que el usuario vuelva atrás con el botón del navegador
+function preventBackNavigation() {
+  window.history.replaceState(null, null, window.location.href);
+  window.addEventListener("popstate", function () {
+    window.location.href = "/login";
+  });
+}
+
+// 3️⃣ Configurar el botón de logout
+function setupLogout() {
+  const logoutButton = document.querySelector(".logout-button");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      fetch('/api/logout', { method: 'POST', credentials: 'same-origin' })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = "/login";
+          }
+        })
+        .catch(error => console.error("Error al hacer logout:", error));
+    });
+  }
+}
+
+// 4️⃣ Inicializar el chat con mensaje de bienvenida
+function initializeChat() {
+  addMessage(`
+    Hello, welcome to The Lock Up Self Storage! How can I assist you today? For example, you can ask:
+    - What storage unit sizes are available?
+    - How much does a unit cost?
+    - What are your office hours?
+  `, false);
+}
+
+// 5️⃣ Cargar historial del chat
+function loadChatHistory() {
+  const chatHistory = JSON.parse(sessionStorage.getItem('chatHistory')) || [];
+  chatHistory.forEach(item => addMessage(item.message, item.isUser));
+}
+
+// Pre 6 === Prompts ===
 function loadPrompts() {
   fetch('/get_prompts')
     .then(response => response.json())
     .then(data => {
       if (data.success) {
         const selectElement = document.getElementById('prompt-select');
-        // Limpiar opciones existentes
         selectElement.innerHTML = '<option value="">-- Select a prompt --</option>';
-        
-        // Añadir cada prompt al selector
+
         data.prompts.forEach(prompt => {
           const option = document.createElement('option');
           option.value = prompt.name;
-          option.textContent = prompt.name;
+          option.textContent = `${prompt.name}${prompt.is_active ? " (active)" : ""}`;
           option.dataset.content = prompt.content;
           option.dataset.active = prompt.is_active;
           selectElement.appendChild(option);
         });
 
-        // Escuchar cambios en el selector
-        selectElement.addEventListener('change', function() {
-          const selectedOption = this.options[this.selectedIndex];
-          if (selectedOption.value) {
-            document.getElementById('prompt-name').value = selectedOption.value;
-            document.getElementById('prompt-content').value = selectedOption.dataset.content;
-          }
-        });
+        const activePrompt = data.prompts.find(p => p.is_active);
+        if (activePrompt) {
+          document.getElementById('prompt-select').value = activePrompt.name;
+          document.getElementById('prompt-name').value = activePrompt.name;
+          document.getElementById('prompt-content').value = activePrompt.content;
+          document.getElementById('prompt-active').checked = true;
+        }
       } else {
         console.error('Error loading prompts:', data.message);
       }
     })
-    .catch(error => {
-      console.error('Error fetching prompts:', error);
+    .catch(error => console.error('Error fetching prompts:', error));
+}
+
+// 6️⃣ Configurar la selección de prompts
+function setupPromptSelect() {
+  loadPrompts();
+  document.getElementById("create-new-prompt").addEventListener("click", () => {
+    document.getElementById("prompt-name").value = "";
+    document.getElementById("prompt-content").value = "";
+    document.getElementById("prompt-select").value = "";
+  });
+
+  document.getElementById("prompt-select").addEventListener("change", function () {
+    const selectedOption = this.options[this.selectedIndex];
+    if (selectedOption.value) {
+      document.getElementById("prompt-name").value = selectedOption.value;
+      document.getElementById("prompt-content").value = selectedOption.dataset.content;
+    }
+  });
+}
+
+// 7️⃣ Configurar el formulario de prompts
+function setupPromptForm() {
+  document.getElementById("prompt-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const name = document.getElementById("prompt-name").value.trim();
+    const content = document.getElementById("prompt-content").value.trim();
+
+    if (!name || !content) {
+      alert("Please provide both a name and content for the prompt");
+      return;
+    }
+
+    fetch('/update_prompt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, content })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      if (data.success) loadPrompts();
+    })
+    .catch(error => console.error('Error saving prompt:', error));
+  });
+}
+
+// 8️⃣ Configurar la eliminación de prompts
+function setupDeletePromptButton() {
+  const deleteButton = document.getElementById("delete-prompt");
+  if (deleteButton) {
+    deleteButton.addEventListener("click", () => {
+      const name = document.getElementById("prompt-name").value.trim();
+      if (!name) {
+        alert("Please select or enter a prompt to delete.");
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete the prompt "${name}"?`)) return;
+
+      fetch('/delete_prompt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        if (data.success) {
+          document.getElementById("prompt-name").value = "";
+          document.getElementById("prompt-content").value = "";
+          document.getElementById("prompt-select").value = "";
+          loadPrompts();
+        }
+      })
+      .catch(error => console.error('Error deleting prompt:', error));
+    });
+  }
+}
+
+// 9️⃣ Configurar subida de archivos
+function setupFileUploadForms() {
+  handleFileUpload("qa-form", "qa-file", "qa_file");
+  handleFileUpload("locations-form", "locations-file", "locations_file");
+}
+
+function handleFileUpload(formId, inputId, fieldName) {
+  document.getElementById(formId).addEventListener("submit", function (e) {
+      e.preventDefault();
+      const fileInput = document.getElementById(inputId);
+      const file = fileInput.files[0];
+      const submitButton = this.querySelector("button[type='submit']");
+
+      if (!file) {
+          alert("Please select a file to upload");
+          return;
+      }
+
+      // Deshabilitar el botón mientras se procesa la carga
+      submitButton.disabled = true;
+      submitButton.textContent = "Uploading...";
+
+      const formData = new FormData();
+      formData.append(fieldName, file);
+
+      fetch('/upload', { method: 'POST', body: formData })
+          .then(response => response.json())
+          .then(data => {
+              alert(data.message);
+          })
+          .catch(error => {
+              console.error(`Error uploading ${fieldName} file:`, error);
+              alert("Error uploading file. Please try again.");
+          })
+          .finally(() => {
+              // Habilitar el botón nuevamente al finalizar la carga
+              submitButton.disabled = false;
+              submitButton.textContent = "Upload";
+              fileInput.value = ""; // Opcional: Limpiar la selección del archivo
+          });
+  });
+}
+
+// 🔟 Configurar la visualización de nombres de archivos
+function setupFileNameDisplays() {
+  [{ inputId: 'qa-file', displayId: 'file-name-qa' },
+   { inputId: 'locations-file', displayId: 'file-name-locations' }]
+    .forEach(({ inputId, displayId }) => {
+      document.getElementById(inputId).addEventListener('change', function () {
+        const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
+        document.getElementById(displayId).textContent = fileName;
+      });
     });
 }
 
-// Formulario para subir archivos Q&A
-document.getElementById("qa-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const file = document.getElementById("qa-file").files[0];
-  
-  if (!file) {
-    alert("Please select a file to upload");
-    return;
-  }
-  
-  const formData = new FormData();
-  formData.append("qa_file", file);
-  
-  fetch('/upload', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    alert(data.message);
-  })
-  .catch(error => {
-    console.error('Error uploading Q&A file:', error);
-    alert("Error uploading file. Please try again.");
-  });
-});
-
-// Formulario para subir archivos de ubicaciones
-document.getElementById("locations-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const file = document.getElementById("locations-file").files[0];
-  
-  if (!file) {
-    alert("Please select a file to upload");
-    return;
-  }
-  
-  const formData = new FormData();
-  formData.append("locations_file", file);
-  
-  fetch('/upload', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    alert(data.message);
-  })
-  .catch(error => {
-    console.error('Error uploading locations file:', error);
-    alert("Error uploading file. Please try again.");
-  });
-});
-
-// Formulario para guardar prompts
-document.getElementById("prompt-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const name = document.getElementById("prompt-name").value;
-  const content = document.getElementById("prompt-content").value;
-
-  if (!name || !content) {
-    alert("Please provide both a name and content for the prompt");
-    return;
-  }
-
-  fetch('/update_prompt', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ name, content })
-  })
-  .then(response => response.json())
-  .then(data => {
-    alert(data.message);
-    if (data.success) {
-      // Recargar los prompts para actualizar el selector
-      loadPrompts();
-    }
-  })
-  .catch(error => {
-    console.error('Error saving prompt:', error);
-    alert("Error saving prompt. Please try again.");
-  });
-});
-
-// Botón para crear un nuevo prompt
-document.getElementById("create-new-prompt").addEventListener("click", function () {
-  document.getElementById("prompt-name").value = "";
-  document.getElementById("prompt-content").value = "";
-  document.getElementById("prompt-select").value = "";
-});
-
-// Funciones del chatbot
+// === Funciones del chatbot ===
 function addMessage(message, isUser = false) {
   const messagesDiv = document.getElementById('chat-messages');
   const messageDiv = document.createElement('div');
   messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
 
-  let formattedMessage = message;
-  formattedMessage = formattedMessage.replace(/(\d+\.\s+[^\n]+)(?=\n|$)/g, '<p class="step">$1</p>');
-  formattedMessage = formattedMessage.replace(/\-\s+([^\n]+)(?=\n|$)/g, '<p class="bullet-point">$1</p>');
-  formattedMessage = formattedMessage.replace(/\n/g, '<br>');
+  let formattedMessage;
 
-  if (!isUser) {
-    // Usamos rutas absolutas en lugar de plantillas Jinja2
-    messageDiv.innerHTML = `
-      <div class="bot-message-content">
-        <div>
-          <!-- <img src="{{ url_for('static', filename='assets/lock-up-bot-icon.svg') }}" alt="Bot" class="bot-icon"> -->
+  // Verifica si el mensaje contiene HTML
+  const containsHTML = /<\/?[a-z][\s\S]*>/i.test(message);
 
-          <img src="../static/assets/lock-up-bot-icon.svg" alt="Bot" class="bot-icon">
-        </div>
-        <div class="bot-formatted-message">
-          <div>${formattedMessage}</div>
-        </div>
-      </div>
-    `;
+  if (containsHTML) {
+      // Si contiene HTML, lo insertamos tal cual
+      formattedMessage = message;
   } else {
-    messageDiv.innerHTML = formattedMessage;
+      // Si no contiene HTML, realizamos las modificaciones para formato
+      formattedMessage = message
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Reemplazar **texto** por <strong>texto</strong>
+      .replace(/(\d+\.\s+[^\n]+)(?=\n|$)/g, '<p class="step">$1</p>') // pasos numerados
+      .replace(/\-\s+([^\n]+)(?=\n|$)/g, '<p class="bullet-point">$1</p>') // puntos con guiones
+      .replace(/\n/g, '<br>'); // saltos de línea
   }
 
+  // Renderizado del mensaje en el DOM
+  if (!isUser) {
+      messageDiv.innerHTML = `
+      <div class="bot-message-content">
+          <div>
+              <img src="../static/assets/lock-up-bot-icon.svg" alt="Bot" class="bot-icon">
+          </div>
+          <div class="bot-formatted-message">
+              <div>${formattedMessage}</div>
+          </div>
+      </div>
+      `;
+  } else {
+      messageDiv.innerHTML = formattedMessage;
+  }
+
+  // Añadir el mensaje al chat y hacer scroll automático hacia abajo
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+  // Guardar el mensaje en sessionStorage
+  let chatHistory = JSON.parse(sessionStorage.getItem('chatHistory')) || [];
+  chatHistory.push({ message, isUser });
+  sessionStorage.setItem('chatHistory', JSON.stringify(chatHistory));
 }
 
+let messageCount = 0;
+const MAX_MESSAGES_BEFORE_HELP = 5;
+  
 function sendMessage() {
   const input = document.getElementById('user-input');
   const message = input.value.trim();
 
-  if (message) {
-    addMessage(message, true);
-    input.value = '';
+  if (!message) return;
 
-    const humanContactKeywords = [
-      "human", "person", "agent", "representative", "speak to someone",
-      "talk to someone", "real person", "customer service", "speak with a human",
-      "talk with a human", "agent", "representative", "manager", "help desk",
-      "not helpful", "can't help", "useless", "frustrated", "annoyed",
-      "speak to a manager"
-    ];
+  addMessage(message, true);
+  input.value = '';
+  // messageCount++;
 
-    const wantsHumanContact = humanContactKeywords.some(keyword =>
-      message.toLowerCase().includes(keyword.toLowerCase())
-    );
+  // if (messageCount >= MAX_MESSAGES_BEFORE_HELP) {
+  //   setTimeout(() => {
+  //     addMessage("I notice we've been chatting for a while. If you need personal assistance, feel free to reach out to our team directly at 866-327-5625 or reservations@thelockup.com.", false);
+  //     messageCount = 0;
+  //   }, 1000);
+  // }
 
-    if (wantsHumanContact) {
-      setTimeout(() => {
-        addMessage("I understand you'd like to speak with a human representative. If you need personal assistance, feel free to reach out to our team directly at 866-327-5625 or reservations@thelockup.com.", false);
-      }, 500);
-      return;
-    }
+  const humanContactKeywords = [
+    "human", "person", "agent", "representative", "speak to someone",
+    "talk to someone", "real person", "customer service", "speak with a human",
+    "talk with a human", "manager", "help desk", "not helpful",
+    "can't help", "useless", "frustrated", "annoyed", "speak to a manager"
+  ];
 
-    fetch('/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ message: message })
-    })
-    .then(response => response.json())
-    .then(data => {
-      addMessage(data.response);
-    })
-    .catch(() => {
-      addMessage('Sorry, there was an error processing your message.');
-    });
+  const wantsHuman = humanContactKeywords.some(keyword =>
+    message.toLowerCase().includes(keyword)
+  );
+
+  if (wantsHuman) {
+    setTimeout(() => {
+      addMessage("I understand you'd like to speak with a human representative. If you need personal assistance, feel free to reach out to our team directly at 866-327-5625 or reservations@thelockup.com.", false);
+    }, 500);
+    return;
   }
+
+  fetch('/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error("Server error");
+    return response.json();
+  })
+  .then(data => addMessage(data.response))
+  .catch(() => addMessage('Sorry, there was an error processing your message.'));
 }
 
-// Contador de mensajes para sugerir contacto humano
-let messageCount = 0;
-const MAX_MESSAGES_BEFORE_HELP = 5;
-const originalSendMessage = sendMessage;
-
-sendMessage = function() {
-  const input = document.getElementById('user-input');
-  const message = input.value.trim();
-
-  if (message) {
-    messageCount++;
-    if (messageCount >= MAX_MESSAGES_BEFORE_HELP) {
-      setTimeout(() => {
-        addMessage("I notice we've been chatting for a while. If you need personal assistance, feel free to reach out to our team directly at 866-327-5625 or reservations@thelockup.com.", false);
-        messageCount = 0;
-      }, 1000);
-    }
-
-    originalSendMessage.call(this);
-  }
-};
-
-// Enviar con Enter
-document.addEventListener('keypress', function(e) {
-  if (e.key === 'Enter' && document.activeElement.id === 'user-input') {
-    sendMessage();
-  }
-});
-
-// Para el primer input de archivo
-document.getElementById('qa-file').addEventListener('change', function() {
-  var fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
-  document.getElementById('file-name-qa').textContent = fileName;
-});
-
-// Para el segundo input de archivo
-document.getElementById('locations-file').addEventListener('change', function() {
-  var fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
-  document.getElementById('file-name-locations').textContent = fileName;
-});
-
-// Aquí va la lógica de logout
-
-document.addEventListener("DOMContentLoaded", () => {
-  const logoutButton = document.querySelector(".logout-button");
-
-  logoutButton.addEventListener("click", () => {
-    window.location.href = "/login"; // Ajustar ruta en backend si es necesario
-  });
-});
+// 🔟+1 Configurar envío con Enter
+function setupEnterKeySubmission() {
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && document.activeElement.id === 'user-input') {
+            sendMessage();
+        }
+    });
+}
