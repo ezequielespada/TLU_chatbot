@@ -184,18 +184,27 @@ function renderNearbyLocations(locations, searchLocation) {
       <p>Here are the locations nearest to "<strong>${searchLocation}</strong>":</p>
       <ul class="locations-list">`;
 
-  locations.forEach(location => {
-    const distance = location.distance?.miles
-      ? ` (${location.distance.miles} miles)`
-      : '';
+  // Calcula cuál es el más cercano (primero por defecto si están ordenados)
+  locations.forEach((location, index) => {
+    const isClosest = index === 0;
+    const distance = location.distance?.miles ? `<span class="badge">${location.distance.miles} mi</span>` : '';
+    const closestBadge = isClosest ? `<span class="badge closest">Closest</span>` : '';
+
+    const addressIcon = '<img src="../static/assets/address-icon.png" class="icon" alt="Address">';
+    const phoneIcon = '<img src="../static/assets/phone-icon.png" class="icon" alt="Phone">';
+    const emailIcon = '<img src="../static/assets/email-icon.png" class="icon" alt="Email">';
+    const websiteIcon = '<img src="../static/assets/website-icon.png" class="icon" alt="Website">';
+    const hoursIcon = '<img src="../static/assets/hours-icon.png" class="icon" alt="Hours">';
+
     html += `
       <li class="location-item">
-        <strong>${location.name}${distance}</strong>
-        ${location.address ? `<div>${location.address}</div>` : ''}
-        ${location.phone ? `<div><a href="tel:${location.phone}">${location.phone}</a></div>` : ''}
-        ${location.email ? `<div><a href="mailto:${location.email}">${location.email}</a></div>` : ''}
-        ${location.website ? `<div><a href="${location.website}" target="_blank">View Location</a></div>` : ''}
-        ${location.hours ? `<div class="location-hours">Hours: ${location.hours}</div>` : ''}
+        <strong>${location.name} ${distance} ${closestBadge}</strong>
+        ${location.address ? `<div>${addressIcon} ${location.address}</div>` : ''}
+        ${location.phone ? `<div>${phoneIcon} <a href="tel:${location.phone}">${location.phone}</a></div>` : ''}
+        ${location.email ? `<div>${emailIcon} <a href="mailto:${location.email}">View email</a></div>` : ''}
+        ${location.website ? `<div>${websiteIcon} <a href="${location.website}" target="_blank">View location</a></div>` : ''}
+        ${location.hours ? `<div>${hoursIcon} ${location.hours}</div>` : ''}
+        ${location.amenities ? `<div class="location-features"><strong>Features:</strong> ${location.amenities}</div>` : ''}
       </li>
     `;
   });

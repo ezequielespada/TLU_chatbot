@@ -48,8 +48,8 @@ body, html {
     position: absolute;
     bottom: 80px;
     right: 20px;
-    width: 320px; 
-    height: 480px;
+    width: 360px; 
+    height: 520px;
     background-color: white;
     border-radius: 10px;
     flex-direction: column;
@@ -214,38 +214,60 @@ button img {
 
 /* Complemento para estilizar items y links */
 
-.locations-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* Añadir estilos para badges */
+.badge {
+    display: inline-block;
+    background-color: rgba(151, 151, 151, 1);
+    color:white;
+    padding: 2px 5px;
+    border-radius: 12px;
+    font-size: 10px;
+    margin-left: 4px;
+}
+
+.closest {
+    background-color: rgba(203, 41, 26, 1);
+    color: white;
+}
+
+/* Estilo para iconos */
+.icon {
+    width: 14px;
+    height: auto;
+    margin-right: 6px;
+}
+
+/* Ajustes para elementos de ubicación */
+.locations-list ul {
+  padding-left: 0;
 }
 
 .location-item {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 16px;
   padding-bottom: 12px;
   border-bottom: 1px solid #e0e0e0;
   font-size: 13px;
   line-height: 1.4;
   color: #333;
-  max-width: 100%;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+}
+
+.location-item div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px; 
 }
 
 .location-item strong {
   font-size: 14px;
-  color: #0E3459;
-  display: block;
-  margin-bottom: 4px;
+  color: rgba(0, 99, 172, 1);
 }
 
 .location-item a {
-  color: #0E3459;
+  color: rgba(54, 54, 54, 1);
   text-decoration: none;
   font-weight: 500;
-  display: inline-block;
-  max-width: 100%;
-  margin-bottom: 2px;
 }
 
 .location-item a:hover {
@@ -253,9 +275,40 @@ button img {
   color: #003366;
 }
 
-.location-hours {
-  font-style: italic;
-  color: #666;
+.location-hours, .location-features {
   font-size: 12px;
+  color: #666;
   margin-top: 4px;
+  font-style: italic;
+}
+
+/* Ajustar texto de características */
+.location-features {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+  margin-top: 4px;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.location-features strong {
+  font-size: 12px;
+  color: #333;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+/* 
+.location-feature-details {
+  display: inline;
+  white-space: normal;
+} */
+
+/* Listado de ítems */
+.locations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
