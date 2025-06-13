@@ -109,6 +109,8 @@ function processResponse(data) {
   const type = data.type;
   const content = data.content;
 
+  console.log("🔍 Procesando respuesta tipo:", type, content); // Debug
+
   // 🔄 Enrutamiento por tipo de respuesta
   if (type === "text" && content.message) {
     addMessage(content.message, 'bot');

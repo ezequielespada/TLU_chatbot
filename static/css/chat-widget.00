@@ -1,0 +1,314 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.cover-image {
+    width: 100%;
+    height: auto;
+}
+
+#chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: "Inter", sans-serif;
+}
+
+.chat-toggle {
+    background-color: #CB291A;
+    color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.chat-toggle.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.chat-toggle img {
+    width: 40px;
+    height: auto;
+}
+
+.chat-popup {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    width: 360px; 
+    height: 520px;
+    background-color: white;
+    border-radius: 10px;
+    flex-direction: column;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+
+}
+
+.chat-popup.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.chat-header {
+    font-family: "Roboto Condensed", sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #0E3459;
+    color: white;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header img {
+    width: 28px; 
+    height: auto;
+    margin-right: 8px; 
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 16px;  
+    font-weight: 700;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.close-chat {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1); 
+}
+
+.chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+#chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 15px;
+    font-size: 13px;  
+    line-height: 1.4; 
+
+}
+
+.input-container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+button {
+    background-color: #ffffff;
+    border: none;
+}
+
+button img {
+    height: 30px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.user-message {
+    background-color: #0063ac;
+    margin-left: auto;
+    color: #ffffff;
+    max-width: 75%;
+}
+
+.bot-message-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.bot-formatted-message {
+    background-color: #f5f5f5;
+    padding: 13px;
+}
+
+.bot-icon {
+    width: 26px;
+    height: auto;
+    margin-top: 4px;
+}
+
+/* Estilos para bullet point */
+
+.step {
+    padding-left: 20px;
+}
+
+.bullet-point {
+    position: relative;
+    padding-left: 20px;
+    line-height: 1;    
+    margin: 0;
+    margin-top: 4px;  
+}
+
+.bullet-point::before {
+    content: '•'; 
+    position: absolute;
+    left: 0;
+    color: #0E3459; 
+    font-size: 16px;
+}
+    
+/* ✅ Correcciones visuales para evitar scroll horizontal en el chat widget */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.bot-message-content {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.bot-formatted-message,
+.locations-list,
+.location-item,
+.location-item a {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+/* Complemento para estilizar items y links */
+
+/* Añadir estilos para badges */
+.badge {
+    display: inline-block;
+    background-color: rgba(151, 151, 151, 1);
+    color:white;
+    padding: 2px 5px;
+    border-radius: 12px;
+    font-size: 10px;
+    margin-left: 4px;
+}
+
+.closest {
+    background-color: rgba(203, 41, 26, 1);
+    color: white;
+}
+
+/* Estilo para iconos */
+.icon {
+    width: 14px;
+    height: auto;
+    margin-right: 6px;
+}
+
+/* Ajustes para elementos de ubicación */
+.locations-list ul {
+  padding-left: 0;
+}
+
+.location-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+}
+
+.location-item div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px; 
+}
+
+.location-item strong {
+  font-size: 14px;
+  color: rgba(0, 99, 172, 1);
+}
+
+.location-item a {
+  color: rgba(54, 54, 54, 1);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.location-item a:hover {
+  text-decoration: underline;
+  color: #003366;
+}
+
+.location-hours, .location-features {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Ajustar texto de características */
+.location-features {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+  margin-top: 4px;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.location-features strong {
+  font-size: 12px;
+  color: #333;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+/* 
+.location-feature-details {
+  display: inline;
+  white-space: normal;
+} */
+
+/* Listado de ítems */
+.locations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

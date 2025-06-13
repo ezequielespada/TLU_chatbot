@@ -214,11 +214,69 @@ button img {
 
 /* Complemento para estilizar items y links */
 
-/* Añadir estilos para badges */
+.locations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.location-item {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.location-item strong {
+  font-size: 14px;
+  color: #0E3459;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.location-item a {
+  color: #0E3459;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 2px;
+}
+
+.location-item a:hover {
+  text-decoration: underline;
+  color: #003366;
+}
+
+.location-hours {
+  font-style: italic;
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Badges para distancias y contexto */
+.distance-badge {
+  background: #4CAF50;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: bold;
+  margin-left: 6px;
+  display: inline-block;
+}
+
+/* Añadir estilos para badges nerby */
 .badge {
     display: inline-block;
     background-color: rgba(151, 151, 151, 1);
-    color:white;
+    color: white;
     padding: 2px 5px;
     border-radius: 12px;
     font-size: 10px;
@@ -229,86 +287,225 @@ button img {
     background-color: rgba(203, 41, 26, 1);
     color: white;
 }
-
-/* Estilo para iconos */
-.icon {
-    width: 14px;
-    height: auto;
-    margin-right: 6px;
+/* aqui termina solo las modificaciones de estilo para nerby */
+.area-badge {
+  background: #2196F3;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  margin-left: 6px;
+  display: inline-block;
 }
 
-/* Ajustes para elementos de ubicación */
-.locations-list ul {
-  padding-left: 0;
+.closest-badge {
+  background: #FF5722;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 9px;
+  font-weight: bold;
+  margin-left: 6px;
+  display: inline-block;
 }
 
-.location-item {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e0e0e0;
-  font-size: 13px;
-  line-height: 1.4;
-  color: #333;
+.primary-badge {
+  background: #9C27B0;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 9px;
+  font-weight: bold;
+  margin-left: 6px;
+  display: inline-block;
 }
 
-.location-item div {
+/* Mejoras para location-header */
+.location-header {
   display: flex;
   align-items: center;
-  margin-bottom: 4px; 
+  flex-wrap: wrap;
+  margin-bottom: 6px;
 }
 
-.location-item strong {
+.location-header strong {
+  color: #0E3459;
   font-size: 14px;
-  color: rgba(0, 99, 172, 1);
 }
 
-.location-item a {
-  color: rgba(54, 54, 54, 1);
+/* Mejoras para location-details */
+.location-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.location-address {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.location-contact {
+  font-size: 12px;
+}
+
+.location-contact a {
+  color: #0E3459;
   text-decoration: none;
+}
+
+.location-contact a:hover {
+  text-decoration: underline;
+}
+
+.location-hours {
+  color: #28a745;
+  font-size: 11px;
   font-weight: 500;
 }
 
-.location-item a:hover {
-  text-decoration: underline;
-  color: #003366;
-}
-
-.location-hours, .location-features {
-  font-size: 12px;
-  color: #666;
-  margin-top: 4px;
+.location-amenities {
+  color: #6f42c1;
+  font-size: 11px;
   font-style: italic;
 }
 
-/* Ajustar texto de características */
-.location-features {
-  font-size: 12px;
+.search-info {
+  margin-top: 12px;
+  padding: 8px;
+  background: #e3f2fd;
+  border-radius: 6px;
+  border-left: 3px solid #2196F3;
+}
+
+.search-info em {
+  color: #1976d2;
+  font-size: 11px;
+}
+
+/* Específico para diferentes tipos de ubicaciones */
+.nearby-locations .location-item {
+  border-left: 3px solid #f5f5f5;
+}
+
+.area-locations .location-item {
+  border-left: 3px solid #f5f5f5;
+}
+
+.amenity-locations .location-item {
+  border-left: 3px solid #9C27B0;
+}
+
+.pricing-locations .location-item {
+  border-left: 3px solid #FF9800;
+}
+
+// ⭐ CSS ADICIONAL - Agregar al final del archivo CSS principal:
+
+.pricing-context-locations .location-item {
+  border-left: 3px solid #4CAF50;
+  margin-bottom: 15px;
+}
+
+.pricing-contact {
+  background-color: #f8f9fa;
+  padding: 8px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.contact-note {
+  font-size: 0.85em;
   color: #666;
+  margin-left: 10px;
+}
+
+.primary-location {
+  background-color: #4CAF50;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin-left: 10px;
+}
+
+.pricing-note {
+  background-color: #e3f2fd;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
+  border-left: 4px solid #2196f3;
+}
+
+.pricing-note em {
+  color: #1976d2;
+}
+
+/* Estilos para mejorar el formato de las respuestas del bot */
+.bot-paragraph {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+
+.bot-list {
+  margin: 1em 0;
+  padding-left: 1.5em;
+}
+
+.bot-list li {
+  margin-bottom: 0.5em;
+}
+
+.formatted-list {
+  list-style-type: disc;
+  margin-left: 1.5em;
+}
+
+.emoji-phone, .emoji-email, .emoji-web {
+  font-size: 1.2em;
+  margin-right: 0.3em;
+}
+
+.bot-quote {
+  border-left: 3px solid #007bff;
+  padding-left: 1em;
+  margin: 1em 0;
   font-style: italic;
-  margin-top: 4px;
-  text-align: left;
-  display: flex;
-  flex-wrap: wrap;
 }
 
-.location-features strong {
-  font-size: 12px;
-  color: #333;
-  margin-right: 4px;
-  white-space: nowrap;
+/* Espaciado mejorado para información de contacto */
+.bot-formatted-message p:has(a[href^="tel:"]),
+.bot-formatted-message p:has(a[href^="mailto:"]) {
+  margin: 0.5em 0;
 }
 
-/* 
-.location-feature-details {
-  display: inline;
-  white-space: normal;
-} */
 
-/* Listado de ítems */
-.locations-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive para badges en móviles */
+@media (max-width: 320px) {
+  .location-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .distance-badge, .area-badge, .closest-badge, .primary-badge {
+    margin-left: 0;
+    margin-top: 4px;
+    font-size: 8px;
+  }
 }
+
+
